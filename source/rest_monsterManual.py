@@ -7,6 +7,7 @@ api = Api(app)
 # unix sqlite: ////absolute/path/to/food.db
 # windows sqlite: ///C:\\absolute\\path\\to\\foo.db
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Build model for database containing Monster Manual
@@ -42,6 +43,7 @@ resource_fields = {
     'name': fields.String,
     'health': fields.Integer, 
     'armorClass': fields.Integer,
+    'movement': fields.Integer,
     'size': fields.String
 }
 
@@ -56,13 +58,13 @@ class Enemy(Resource):
         result = MonsterManual.query.filter_by(enemy_id).first()
         # If found
         if result:
-            abort(409, message="Enemy already exists in this Monster Manual")
+            abort(409, message="Enemy already exists in this Monster Manual") # 409 since already exists
         # Define enemy based on arguments before putting it into the database
         enemy = MonsterManual(id=enemy_id, name=args['name'], health=args['health'], 
                               armorClass=args['armorClass'], movement=args['movement'], size=args['size'])
         db.session.add(enemy)
         db.session.commit() # Commit addition to the database
-        # Return things went peachy
+        # Return things went peachy (200)
         return enemy, 200
         
     @app.route("/MonsterManual", methods=["PATCH"])
@@ -74,7 +76,7 @@ class Enemy(Resource):
         result = MonsterManual.query.filter_by(enemy_id).first()
         # If not found in Monster Manual
         if not result:
-            abort(404, message="Enemy doesn't exist, please add enemy to database")
+            abort(404, message="Enemy doesn't exist, please add enemy to database") # 404 as does not exist
         # Otherwise, update whatever stats accordingly, i.e., if provided 
         if args['name']:
             result.name = args['name']
@@ -82,6 +84,8 @@ class Enemy(Resource):
             result.health = args['health']
         if args['armorClass']:
             result.armorClass = args['armorClass']
+        if args['movement']:
+            result.movement = args['movement']
         if args['size']:
             result.size = args['size']
         # Commit changes to the database
@@ -98,7 +102,7 @@ class Enemy(Resource):
             return result
         
         # Return that the enemy wasn't found in the Monster Manual database
-        result = make_response(jsonify({}), 404)
+        result = make_response(jsonify({}), 404) # 404 not found
         return result  
                
     @app.route("/MonsterManual", methods=["GET"])
@@ -107,7 +111,7 @@ class Enemy(Resource):
         result = MonsterManual.query.filter_by(id=enemy_id).first()
         # If not found in Monster Manual database
         if not result:
-            abort(404, message="Could not find enemy in Monster Manual")
+            abort(404, message="Could not find enemy in Monster Manual") # 404 not found
         # Return result to show found enemy
         return result
              
