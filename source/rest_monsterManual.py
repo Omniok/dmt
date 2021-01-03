@@ -111,5 +111,7 @@ class Enemy(Resource):
         # Return result to show found enemy
         return result
              
+api.add_resource(Enemy, "/enemy/<int:enemy_id>")
+
 if __name__ == "__rest_monsterManual__":
     app.run(debug=True)
