@@ -55,7 +55,7 @@ class Enemy(Resource):
         # Gather arguments to use
         args = mo_enemy_args.parse_args()
         # Run query
-        result = MonsterManual.query.filter_by(enemy_id).first()
+        result = MonsterManual.query.filter_by(id=enemy_id).first()
         # If found
         if result:
             abort(409, message="Enemy already exists in this Monster Manual") # 409 since already exists
@@ -73,7 +73,7 @@ class Enemy(Resource):
         # Gather arguments to use
         args = update_enemy_args.parse_args()
         # Run query
-        result = MonsterManual.query.filter_by(enemy_id).first()
+        result = MonsterManual.query.filter_by(id=enemy_id).first()
         # If not found in Monster Manual
         if not result:
             abort(404, message="Enemy doesn't exist, please add enemy to database") # 404 as does not exist
@@ -93,9 +93,9 @@ class Enemy(Resource):
         # Return result to show successful update of enemy information
         return result
     
-    @app.route("/MonsterManual", methods=["DELETE"])
+    @app.route("/MonsterManual", methods=["DELETE"]) 
     @marshal_with(resource_fields)
-    def delete(self, enemy_id):
+    def delete(self, enemy_id):         ##### NOT functioning
         if enemy_id in MonsterManual:
             del MonsterManual[enemy_id]
             result = make_response(jsonify({}), 204) # Return that there is no content present now (204)
@@ -117,5 +117,5 @@ class Enemy(Resource):
              
 api.add_resource(Enemy, "/enemy/<int:enemy_id>")
 
-if __name__ == "__rest_monsterManual__":
+if __name__ == "__main__":
     app.run(debug=True)
