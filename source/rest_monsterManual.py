@@ -117,5 +117,5 @@ class Enemy(Resource):
              
 api.add_resource(Enemy, "/enemy/<int:enemy_id>")
 
-if __name__ == "__rest_monsterManual__":
+if __name__ == "__main__":
     app.run(debug=True)
