@@ -1,13 +1,19 @@
 import os, sys
 
 try:
-    os.system("pip install -U requests flask flask_restful flask_sqlalchemy")
     from flask import Flask
     from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
     from flask_sqlalchemy import SQLAlchemy
 except:
-    print("Necessary modules not installed. Halting execution.")
+    try:
+        os.system("pip install -U requests flask flask_restful flask_sqlalchemy")
+        print("Necessary modules not install at runtime. Installation through pip has been attempted, please restart the program.")
+    except:
+        print("Unable to install required modules.")
     sys.exit()
+
+
+
 
 
 app = Flask(__name__)
