@@ -7,7 +7,7 @@ try:
 except:
     try:
         os.system("pip install -U requests flask flask_restful flask_sqlalchemy")
-        print("Necessary modules not install at runtime. Installation through pip has been attempted, please restart the program.")
+        print("Necessary modules not installed at runtime. Installation through pip has been attempted, please restart the program.")
     except:
         print("Unable to install required modules.")
     sys.exit()
