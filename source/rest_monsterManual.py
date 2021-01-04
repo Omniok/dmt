@@ -18,7 +18,7 @@ except:
 
 app = Flask(__name__)
 api = Api(app)
-# unix sqlite: ////absolute/path/to/food.db
+# unix sqlite: ////absolute/path/to/foo.db
 # windows sqlite: ///C:\\absolute\\path\\to\\foo.db
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -69,7 +69,7 @@ class Enemy(Resource):
     def put(self, enemy_id):
         # Gather arguments to use
         args = mo_enemy_args.parse_args()
-        # Run query
+        # Run query to find the enemy we are trying to add to the Monster Manual
         result = MonsterManual.query.filter_by(id=enemy_id).first()
         # If found
         if result:
@@ -77,7 +77,7 @@ class Enemy(Resource):
         # Define enemy based on arguments before putting it into the database
         enemy = MonsterManual(id=enemy_id, name=args['name'], health=args['health'], 
                               armorClass=args['armorClass'], movement=args['movement'], size=args['size'])
-        db.session.add(enemy)
+        db.session.add(enemy) # Add to database
         db.session.commit() # Commit addition to the database
         # Return things went peachy (200)
         return enemy, 200
@@ -87,7 +87,7 @@ class Enemy(Resource):
     def patch(self, enemy_id):
         # Gather arguments to use
         args = update_enemy_args.parse_args()
-        # Run query
+        # Run query to find the enemy we are trying to update stats on
         result = MonsterManual.query.filter_by(id=enemy_id).first()
         # If not found in Monster Manual
         if not result:
@@ -110,13 +110,14 @@ class Enemy(Resource):
     
     @app.route("/MonsterManual", methods=["DELETE"]) 
     @marshal_with(resource_fields)
-    def delete(self, enemy_id):         ##### NOT functioning
+    def delete(self, enemy_id):
         # Run query to check for the presence of the enemy in the Monster Manual
         result = MonsterManual.query.filter_by(id=enemy_id).first()
+        # If found
         if result:
-            db.session.query(MonsterManual).filter(MonsterManual.id==enemy_id).delete()
-            db.session.commit()
-            return result
+            db.session.query(MonsterManual).filter(MonsterManual.id==enemy_id).delete() # Delete the entry from the database
+            db.session.commit() # And commit the changes to the database
+            return result # Return what has been deleted
         
         # Return that the enemy wasn't found in the Monster Manual database
         return result, 404  
@@ -124,6 +125,7 @@ class Enemy(Resource):
     @app.route("/MonsterManual", methods=["GET"])
     @marshal_with(resource_fields)
     def get(self, enemy_id):
+        # Run query to check for the presence of the enemy in the Monster Manual
         result = MonsterManual.query.filter_by(id=enemy_id).first()
         # If not found in Monster Manual database
         if not result:
