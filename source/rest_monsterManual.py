@@ -1,4 +1,4 @@
-from flask import Flask, make_response, jsonify
+from flask import Flask
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
 
@@ -12,6 +12,7 @@ db = SQLAlchemy(app)
 
 # Build model for database containing Monster Manual
 class MonsterManual(db.Model): 
+    __tablename__ = 'MonsterManual'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     health = db.Column(db.Integer, nullable=False)
@@ -96,14 +97,15 @@ class Enemy(Resource):
     @app.route("/MonsterManual", methods=["DELETE"]) 
     @marshal_with(resource_fields)
     def delete(self, enemy_id):         ##### NOT functioning
-        if enemy_id in MonsterManual:
-            del MonsterManual[enemy_id]
-            result = make_response(jsonify({}), 204) # Return that there is no content present now (204)
+        # Run query to check for the presence of the enemy in the Monster Manual
+        result = MonsterManual.query.filter_by(id=enemy_id).first()
+        if result:
+            db.session.query(MonsterManual).filter(MonsterManual.id==enemy_id).delete()
+            db.session.commit()
             return result
         
         # Return that the enemy wasn't found in the Monster Manual database
-        result = make_response(jsonify({}), 404) # 404 not found
-        return result  
+        return result, 404  
                
     @app.route("/MonsterManual", methods=["GET"])
     @marshal_with(resource_fields)
