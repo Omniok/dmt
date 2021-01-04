@@ -1,6 +1,14 @@
-from flask import Flask
-from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
-from flask_sqlalchemy import SQLAlchemy
+import os, sys
+
+try:
+    os.system("pip install -U requests flask flask_restful flask_sqlalchemy")
+    from flask import Flask
+    from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
+    from flask_sqlalchemy import SQLAlchemy
+except:
+    print("Necessary modules not installed. Halting execution.")
+    sys.exit()
+
 
 app = Flask(__name__)
 api = Api(app)
