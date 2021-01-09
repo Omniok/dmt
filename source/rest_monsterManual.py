@@ -12,10 +12,6 @@ except:
         print("Unable to install required modules.")
     sys.exit()
 
-
-
-
-
 app = Flask(__name__)
 api = Api(app)
 # unix sqlite: ////absolute/path/to/foo.db
