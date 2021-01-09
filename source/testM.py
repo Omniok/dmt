@@ -2,6 +2,7 @@ import requests
 
 BASE = "http://127.0.0.1:5000/"
 
+print("Testing Monster Manual Table - ")
 print("Testing get - ")
 response = requests.get(BASE + "enemy/1", {})
 print(response.json())
