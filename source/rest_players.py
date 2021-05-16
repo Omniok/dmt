@@ -29,9 +29,10 @@ class players(db.Model):
     armorClass = db.Column(db.Integer, nullable=False)
     movement = db.Column(db.Integer, nullable=False)
     size = db.Column(db.String(100), nullable=False)
+    spellSlots = db.Column(db.Integer, nullable=False)
     
     def __repr__(self): 
-        return f"Player(Name = {name}, Health = {health}, Armor Class = {armorClass}, Movement = {movement}, Size = {size}" 
+        return f"Player(Name = {name}, Health = {health}, Armor Class = {armorClass}, Movement = {movement}, Size = {size}, Spell Slots = {spellSlots}" 
 
 # Define arguments to use when adding enemies or updating the stats of a preexisting player
 mo_player_args = reqparse.RequestParser() # For adding enemies to the database
@@ -40,6 +41,7 @@ mo_player_args.add_argument("health", type=int, help="Health of the player requi
 mo_player_args.add_argument("armorClass", type=int, help="Armor class of the player required", required=True)
 mo_player_args.add_argument("movement", type=int, help="Movement of the player required", required=True)
 mo_player_args.add_argument("size", type=str, help="Size of the player required", required=True)
+mo_player_args.add_argument("spellSlots", type=int, help="Number of spell slots player has required", required=True)
 
 update_player_args = reqparse.RequestParser() # For updating enemies already on the database
 update_player_args.add_argument("name", type=str, help="Name of the player")
@@ -47,6 +49,7 @@ update_player_args.add_argument("health", type=int, help="Health of the player")
 update_player_args.add_argument("armorClass", type=int, help="Armor class of the player")
 update_player_args.add_argument("movement", type=int, help="Movement of the player")
 update_player_args.add_argument("size", type=str, help="Size of the player")
+update_player_args.add_argument("spellSlots", type=int, help="Number of spell slots player has")
 
 # Define resource fields    
 resource_fields = {
@@ -55,7 +58,8 @@ resource_fields = {
     'health': fields.Integer, 
     'armorClass': fields.Integer,
     'movement': fields.Integer,
-    'size': fields.String
+    'size': fields.String,
+    'spellSlots': fields.Integer
 }
 
 # Class for the enemies in the Player Table, enclosed are functions to perform queries with the sqlite3 database
@@ -72,7 +76,7 @@ class Player(Resource):
             abort(409, message="Player already exists in this Player Table") # 409 since already exists
         # Define player based on arguments before putting it into the database
         player = players(id=player_id, name=args['name'], health=args['health'], 
-                              armorClass=args['armorClass'], movement=args['movement'], size=args['size'])
+                              armorClass=args['armorClass'], movement=args['movement'], size=args['size'], spellSlots=args['spellSlots'])
         db.session.add(player) # Add to database
         db.session.commit() # Commit addition to the database
         # Return things went peachy (200)
@@ -99,6 +103,8 @@ class Player(Resource):
             result.movement = args['movement']
         if args['size']:
             result.size = args['size']
+        if args['spellSlots']:
+            result.spellSlots = args['spellSlots']
         # Commit changes to the database
         db.session.commit()
         # Return result to show successful update of player information
