@@ -12,7 +12,6 @@ except:
         print("Unable to install required modules.")
     sys.exit()
 
-
 app = Flask(__name__)
 api = Api(app)
 # unix sqlite: ////absolute/path/to/foo.db
@@ -21,7 +20,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# Build model for database containing Player Table
+# Build model for table containing Player Table
 class players(db.Model): 
     __tablename__ = 'players'
     id = db.Column(db.Integer, primary_key=True)

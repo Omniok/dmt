@@ -20,7 +20,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# Build model for database containing Monster Manual
+# Build model for table containing Monster Manual
 class MonsterManual(db.Model): 
     __tablename__ = 'MonsterManual'
     id = db.Column(db.Integer, primary_key=True)
