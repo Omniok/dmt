@@ -1,10 +1,53 @@
 from flask import Blueprint 
 from flask_restful import Resource, reqparse, abort, fields, marshal_with
 from flaskInit import db, app, api
+<<<<<<< HEAD
 from endpoints.models.monsterManual import *
 
 # Create blueprint to record operations
 monsterManualEP = Blueprint("monsterManualEP", __name__, url_prefix="/MonsterManual")
+=======
+from models.monsterManual import *
+
+<<<<<<<< HEAD:source/backend/rest_monsterManual.py
+try:
+    from flask import Flask
+    from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
+    from flask_sqlalchemy import SQLAlchemy
+except:
+    try:
+        os.system("pip install -U requests flask flask_restful flask_sqlalchemy")
+        print("Necessary modules not installed at runtime. Installation through pip has been attempted, please restart the program.")
+    except:
+        print("Unable to install required modules.")
+    sys.exit()
+
+app = Flask(__name__)
+api = Api(app)
+# unix sqlite: ////absolute/path/to/foo.db
+# windows sqlite: ///C:\\absolute\\path\\to\\foo.db
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tables/test.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+# Build model for table containing Monster Manual
+class MonsterManual(db.Model): 
+    __tablename__ = 'MonsterManual'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    health = db.Column(db.Integer, nullable=False)
+    armorClass = db.Column(db.Integer, nullable=False)
+    movement = db.Column(db.Integer, nullable=False)
+    size = db.Column(db.String(100), nullable=False)
+    spellSlots = db.Column(db.Integer, nullable=False)
+    
+    def __repr__(self): 
+        return f"Enemy(Name = {name}, Health = {health}, Armor Class = {armorClass}, Movement = {movement}, Size = {size}, Spell Slots = {spellSlots}" 
+========
+# Create blueprint to record operations
+monsterManualEP = Blueprint("monsterManualEP", __name__)
+>>>>>>>> origin/data:source/endpoints/monsterManual_Endpoint.py
+>>>>>>> origin/data
 
 # Define arguments to use when adding enemies or updating the stats of a preexisting enemy
 mo_enemy_args = reqparse.RequestParser() # For adding enemies to the database

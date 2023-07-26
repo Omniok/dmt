@@ -1,10 +1,17 @@
 from flask import Blueprint
 from flask_restful import Resource, reqparse, abort, fields, marshal_with
 from flaskInit import db, app, api
+<<<<<<< HEAD
 from endpoints.models.players import *
 
 # Create blueprint to record operations
 playersEP = Blueprint("playersEP", __name__, url_prefix="/players")
+=======
+from models.players import *
+
+# Create blueprint to record operations
+playersEP = Blueprint("playersEP", __name__)
+>>>>>>> origin/data
 
 # Define arguments to use when adding players or updating the stats of a preexisting player
 mo_player_args = reqparse.RequestParser() # For adding players to the database
