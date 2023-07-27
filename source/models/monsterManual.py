@@ -1,6 +1,5 @@
 from flaskInit import db
 
-
 # Build model for table containing Monster Manual
 class MonsterManual(db.Model): 
     __tablename__ = 'MonsterManual'

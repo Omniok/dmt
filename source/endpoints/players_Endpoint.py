@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask_restful import Resource, reqparse, abort, fields, marshal_with
 from flaskInit import db, app, api
-from endpoints.models.players import *
+from models.players import *
 
 # Create blueprint to record operations
 playersEP = Blueprint("playersEP", __name__, url_prefix="/players")
