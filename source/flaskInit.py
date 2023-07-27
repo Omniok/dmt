@@ -1,3 +1,4 @@
+
 import os, sys
 try:
     from flask import Flask
@@ -5,11 +6,7 @@ try:
     from flask_sqlalchemy import SQLAlchemy
 except:
     try:
-<<<<<<< HEAD
         os.system("pip install -U requests flask flask_restful flask_sqlalchemy --break-system-packages")
-=======
-        os.system("pip install -U requests flask flask_restful flask_sqlalchemy")
->>>>>>> origin/data
         print("Necessary modules not installed at runtime. Installation through pip has been attempted, please restart the program.")
     except:
         print("Unable to install required modules.")

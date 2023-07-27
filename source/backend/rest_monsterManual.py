@@ -3,7 +3,6 @@ from flask_restful import Resource, reqparse, abort, fields, marshal_with
 from flaskInit import db, app, api
 from models.monsterManual import *
 
-<<<<<<<< HEAD:source/backend/rest_monsterManual.py
 try:
     from flask import Flask
     from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
@@ -37,10 +36,9 @@ class MonsterManual(db.Model):
     
     def __repr__(self): 
         return f"Enemy(Name = {name}, Health = {health}, Armor Class = {armorClass}, Movement = {movement}, Size = {size}, Spell Slots = {spellSlots}" 
-========
+
 # Create blueprint to record operations
 monsterManualEP = Blueprint("monsterManualEP", __name__)
->>>>>>>> origin/data:source/endpoints/monsterManual_Endpoint.py
 
 # Define arguments to use when adding enemies or updating the stats of a preexisting enemy
 mo_enemy_args = reqparse.RequestParser() # For adding enemies to the database

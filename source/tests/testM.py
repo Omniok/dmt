@@ -5,6 +5,7 @@ def testMonsterManual(base):
   print("Testing get - ")
   response = requests.get(base + "enemy/1", {})
   print(response.request, response.status_code)
+  print(response.text)
   print(response.json(), "\n")
   
   print("Testing put - ")
