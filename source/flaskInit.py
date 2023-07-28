@@ -1,4 +1,3 @@
-
 import os, sys
 try:
     from flask import Flask
@@ -16,6 +15,6 @@ app = Flask(__name__)
 api = Api(app)
 # unix sqlite: ////absolute/path/to/foo.db
 # windows sqlite: ///C:\\absolute\\path\\to\\foo.db
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tables/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///../tables/test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
