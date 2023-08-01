@@ -7,52 +7,40 @@ def is_dice_roll(rollText: str) -> bool:
 
 # Function to get the intended dice roll from user input string
 def get_intended_dice_roll(rollText: str) -> list:
-  rollText = rollText[5:] # Strip off "roll"
-  rolls = rollText.split(" ")
-  rolls = [i for i in rolls if i != ""] # Remove any empty strings
+  rollText = rollText[5:] # Strip off "/roll"
+  rolls = rollText.split(" ") # Tokenize roll text
+  rolls = [i for i in rolls if i != ""] # Remove any empty strings 
   # If the 1st element in the list is a number, then it's the number of dice to roll
+  # e.g., "/roll 2 d6"
   if rolls[0].isdigit():
     nDice = int(rolls[0])
-    diceType = rolls[1]
+    diceType = int(rolls[1].replace("d", "")) # Strip off "d" from the dice type
   # Otherwise, the number of dice to roll is either not specified, or it's prepended to the dice type
+  # e.g., "/roll d100" or "/roll 2d6"
   else:
-    tempRollCheck = rolls[0].split("d") #Split any prepended number of dice from the dice type
-    tempRollCheck = [i for i in tempRollCheck if i!= ""] # Remove any empty strings
+    # Check to see dice type and ensure is separate from number of rolls to be made
+    rolls = rolls[0].split("d") #Split any prepended number of dice from the dice type
+    rolls = [i for i in rolls if i != ""] # Remove any empty strings
     # If length of the list is 2, then there was a prepended number of dice
-    if len(tempRollCheck) == 2:
-      nDice = int(tempRollCheck[0])
-      diceType = "d" + tempRollCheck[1]
+    # The "/roll 2d6" case
+    if len(rolls) == 2:
+      nDice = int(rolls[0])
+      diceType = int(rolls[1])
     # Otherwise, there was no prepended number of dice
+    # The "/roll d100" case
     else:
       nDice = 1
-      diceType = rolls[0]
+      diceType = int(rolls[0])
   
   return [nDice, diceType]
 
 # Function to roll the dice and return a list of the rolls
-def roll_dice(nDice: int, diceType: str) -> list[int]:
-  diceRolls = []
-  while nDice > 0:
-    diceRoll = [] 
-    if diceType == "d100":
-      diceRoll = random.randint(1, 100)
-    elif diceType == "d20":
-      diceRoll = random.randint(1, 20)
-    elif diceType == "d12":
-      diceRoll = random.randint(1, 12)
-    elif diceType == "d10":
-      diceRoll = random.randint(1, 10)
-    elif diceType == "d8":
-      diceRoll = random.randint(1, 8)
-    elif diceType == "d6":
-      diceRoll = random.randint(1, 6)
-    elif diceType == "d4":
-      diceRoll = random.randint(1, 4)
-    elif diceType == "d3":
-      diceRoll = random.randint(1, 3)
-    elif diceType == "d2":
-      diceRoll = random.randint(1, 2)
-    diceRolls.append(diceRoll)
-    nDice -= 1
+def roll_dice(nDice: int, diceType: int) -> list[int]:
+  diceRolls = [] # List of dice rolls
+  # Roll given number of dice and dice type
+  while nDice > 0: 
+    # Roll a die of diceType and append to list of dice rolls
+    diceRolls.append(random.randint(1, diceType)) 
+    nDice -= 1 # Decrement the number of dice to roll
     
   return diceRolls
